@@ -26,5 +26,16 @@ namespace FiorelloBackend.Services
                 Logo = settingDatas["HeaderLogo"]
             };
         }
+
+        public FooterVM GetFooterDatas()
+        {
+            Dictionary<string, string> settingDatas = _settingService.GetSettings();
+
+            return new FooterVM
+            {
+                PhoneNumber = settingDatas["Phone"],
+                Address = settingDatas["Address"]
+            };
+        }
     }
 }

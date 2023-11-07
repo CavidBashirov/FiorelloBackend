@@ -16,8 +16,7 @@ namespace FiorelloBackend.Services
 
         public async Task<List<Product>> GetAllWithImagesByTakeAsync(int take)
         {
-            return await _context.Products.Where(m => !m.SoftDeleted)
-                                          .Include(m => m.Images)
+            return await _context.Products.Include(m => m.Images)
                                           .Take(take)
                                           .ToListAsync();
         }
@@ -26,10 +25,10 @@ namespace FiorelloBackend.Services
 
         public async Task<Product> GetByIdWithIncludesAsync(int id)
         {
-            return await _context.Products.Where(m => !m.SoftDeleted && m.Id == id)
-                                                              .Include(m => m.Images)
-                                                              .Include(m => m.Category)
-                                                              .FirstOrDefaultAsync();
+            return await _context.Products.Where(m => m.Id == id)
+                                          .Include(m => m.Images)
+                                          .Include(m => m.Category)
+                                          .FirstOrDefaultAsync();
         }
     }
 }

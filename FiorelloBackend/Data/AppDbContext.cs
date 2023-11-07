@@ -14,5 +14,25 @@ namespace FiorelloBackend.Data
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Setting> Settings { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>().HasQueryFilter(m=>!m.SoftDeleted);
+            modelBuilder.Entity<Category>().HasQueryFilter(m=>!m.SoftDeleted);
+            modelBuilder.Entity<Blog>().HasQueryFilter(m=>!m.SoftDeleted);
+
+
+            modelBuilder.Entity<Setting>().HasData(
+               new Setting
+               {
+                 Id=3,
+                 Key = "Phone",
+                 Value = "45873458"
+               }
+
+            );
+
+        }
     }
 }

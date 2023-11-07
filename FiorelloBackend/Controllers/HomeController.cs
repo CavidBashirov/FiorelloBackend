@@ -28,7 +28,6 @@ namespace FiorelloBackend.Controllers
         {
             IEnumerable<Slider> sliders = await _context.Sliders.ToListAsync();
             SliderInfo sliderInfo = await _context.SliderInfos.FirstOrDefaultAsync();
-            List<Blog> blogs = await _context.Blogs.Where(m => !m.SoftDeleted).ToListAsync();
             List<Product> products = await _productService.GetAllWithImagesByTakeAsync(8);
             List<Category> categories = await _context.Categories.Where(m => !m.SoftDeleted).ToListAsync();
 
@@ -36,7 +35,6 @@ namespace FiorelloBackend.Controllers
             {
                 Sliders = sliders,
                 SliderInfo = sliderInfo,
-                Blogs = blogs,
                 Products = products,
                 Categories = categories
             };
