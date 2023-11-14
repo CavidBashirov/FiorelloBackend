@@ -26,7 +26,7 @@ namespace FiorelloBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Slider> sliders = await _context.Sliders.ToListAsync();
+            IEnumerable<Slider> sliders = await _context.Sliders.Where(m=>m.Status).ToListAsync();
             SliderInfo sliderInfo = await _context.SliderInfos.FirstOrDefaultAsync();
             List<Product> products = await _productService.GetAllWithImagesByTakeAsync(8);
             List<Category> categories = await _context.Categories.Where(m => !m.SoftDeleted).ToListAsync();
