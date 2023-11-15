@@ -21,6 +21,7 @@ namespace FiorelloBackend.Data
             modelBuilder.Entity<Product>().HasQueryFilter(m=>!m.SoftDeleted);
             modelBuilder.Entity<Category>().HasQueryFilter(m=>!m.SoftDeleted);
             modelBuilder.Entity<Blog>().HasQueryFilter(m=>!m.SoftDeleted);
+            modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDeleted);
 
 
             modelBuilder.Entity<Setting>().HasData(

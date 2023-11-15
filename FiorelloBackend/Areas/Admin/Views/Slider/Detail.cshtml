@@ -1,11 +1,11 @@
-﻿@model Slider
+﻿@model SliderVM
 @{
     ViewData["Title"] = "Detail";
 }
 
 <div class="container mt-5">
     <div class="image">
-        <img src="~/img/@Model.Img" style="width:70%; height:30%;" />
+        <img src="~/img/@Model.Image" style="width:70%; height:30%;" />
     </div>
     @if (Model.Status)
     {

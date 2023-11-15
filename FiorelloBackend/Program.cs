@@ -20,6 +20,7 @@ builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<ILayoutService, LayoutService>();
 builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISliderService, SliderService>();
 
 
 var app = builder.Build();

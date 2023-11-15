@@ -7,8 +7,5 @@ namespace FiorelloBackend.Models
     {
         public string Img { get; set; }
         public bool Status { get; set; } = true;
-        [NotMapped]
-        [Required]
-        public IFormFile Photo { get; set; }
     }
 }

@@ -1,8 +1,11 @@
-﻿using FiorelloBackend.Data;
+﻿using FiorelloBackend.Areas.Admin.ViewModels.Slider;
+using FiorelloBackend.Data;
 using FiorelloBackend.Helpers.Extentions;
 using FiorelloBackend.Models;
+using FiorelloBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace FiorelloBackend.Areas.Admin.Controllers
 {
@@ -11,20 +14,22 @@ namespace FiorelloBackend.Areas.Admin.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly ISliderService _sliderService;
 
-        public SliderController(AppDbContext context, IWebHostEnvironment env)
+        public SliderController(AppDbContext context,
+                               IWebHostEnvironment env,
+                               ISliderService sliderService)
         {
             _context = context;
             _env = env;
+            _sliderService = sliderService;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Slider> sliders = await _context.Sliders.Where(m => !m.SoftDeleted)
-                                                                .ToListAsync();
-            return View(sliders);
+            return View(await _sliderService.GetAllAsync());
         }
 
         [HttpGet]
@@ -32,14 +37,13 @@ namespace FiorelloBackend.Areas.Admin.Controllers
         {
             if (id is null) return BadRequest();
 
-            Slider slider = await _context.Sliders.FirstOrDefaultAsync(m => m.Id == id);
+            SliderVM slider = await _sliderService.GetByIdAsync((int)id);
 
             if (slider is null) return NotFound();
 
             return View(slider);
 
         }
-
 
         [HttpGet]
         public IActionResult Create()
@@ -49,52 +53,99 @@ namespace FiorelloBackend.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Slider slider)
+        public async Task<IActionResult> Create(SliderCreateVM slider)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            if (!slider.Photo.CheckFileType("image/"))
+            foreach (var photo in slider.Photos)
             {
-                ModelState.AddModelError("Photo", "File can be only image format");
-                return View();
+
+                if (!photo.CheckFileType("image/"))
+                {
+                    ModelState.AddModelError("Photos", "File can be only image format");
+                    return View();
+                }
+
+                if (!photo.CheckFileSize(200))
+                {
+                    ModelState.AddModelError("Photos", "File size can be max 200 kb");
+                    return View();
+                }
             }
 
-            if(!slider.Photo.CheckFileSize(200))
+            foreach (var photo in slider.Photos)
             {
-                ModelState.AddModelError("Photo", "File size can be max 200 kb");
-                return View();
+                string fileName = $"{Guid.NewGuid()}-{photo.FileName}";
+
+                string path = _env.GetFilePath("img", fileName);
+
+                await _context.Sliders.AddAsync(new Slider { Img = fileName});
+
+                await _context.SaveChangesAsync();
+
+                await photo.SaveFileAsync(path);
             }
-
-
-            string fileName = $"{Guid.NewGuid()}-{slider.Photo.FileName}";
-
-            string path = _env.GetFilePath("img", fileName);
-
-            slider.Img = fileName;
-            await _context.Sliders.AddAsync(slider);
-            await _context.SaveChangesAsync();
-
-            await slider.Photo.SaveFileAsync(path);
 
             return RedirectToAction(nameof(Index));
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id is null) return BadRequest();
 
-            Slider slider = await _context.Sliders.FirstOrDefaultAsync(m => m.Id == id);
+            SliderVM slider = await _sliderService.GetByIdAsync((int)id);
 
             if (slider is null) return NotFound();
 
-            return View(slider);
+            return View(new SliderEditVM { Image = slider.Image });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, SliderEditVM slider)
+        {
+            if (id is null) return BadRequest();
+
+            SliderVM dbSlider = await _sliderService.GetByIdAsync((int)id);
+
+            if (dbSlider is null) return NotFound();
+
+            slider.Image = dbSlider.Image;
+
+            if (slider.Photo is null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!slider.Photo.CheckFileType("image/"))
+            {
+                ModelState.AddModelError("Photo", "File can be only image format");
+                return View(slider);
+            }
+
+            if (!slider.Photo.CheckFileSize(200))
+            {
+                ModelState.AddModelError("Photo", "File size can be max 200 kb");
+                return View(slider);
+            }
+
+
+            await _sliderService.EditAsync(slider);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _sliderService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -124,5 +175,7 @@ namespace FiorelloBackend.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+   
+
     }
 }

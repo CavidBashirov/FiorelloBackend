@@ -1,4 +1,5 @@
-﻿using FiorelloBackend.Data;
+﻿using FiorelloBackend.Areas.Admin.ViewModels.Slider;
+using FiorelloBackend.Data;
 using FiorelloBackend.Models;
 using FiorelloBackend.Services.Interfaces;
 using FiorelloBackend.ViewModels;
@@ -13,20 +14,23 @@ namespace FiorelloBackend.Controllers
         private readonly AppDbContext _context;
         private readonly IProductService _productService;
         private readonly IBasketService _basketService;
+        private readonly ISliderService _sliderService;
 
         public HomeController(AppDbContext context,
                               IProductService productService,
-                              IBasketService basketService)
+                              IBasketService basketService,
+                              ISliderService sliderService)
         {
             _context = context;
             _productService = productService;
             _basketService = basketService;
+            _sliderService = sliderService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Slider> sliders = await _context.Sliders.Where(m=>m.Status).ToListAsync();
+            List<SliderVM> sliders = await _sliderService.GetAllWithTrueStatusAsync();
             SliderInfo sliderInfo = await _context.SliderInfos.FirstOrDefaultAsync();
             List<Product> products = await _productService.GetAllWithImagesByTakeAsync(8);
             List<Category> categories = await _context.Categories.Where(m => !m.SoftDeleted).ToListAsync();
