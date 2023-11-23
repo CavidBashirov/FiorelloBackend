@@ -133,7 +133,6 @@ namespace FiorelloBackend.Areas.Admin.Controllers
                 return View(slider);
             }
 
-
             await _sliderService.EditAsync(slider);
 
             return RedirectToAction(nameof(Index));

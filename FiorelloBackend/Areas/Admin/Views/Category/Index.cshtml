@@ -23,7 +23,7 @@
                 {
                     <tr>
                         <td>
-                            @category.Name
+                            @Html.Raw(category.Name)
                         </td>
                         <td>
                             <a class="btn btn-outline-info" asp-action="Detail" asp-route-id="@category.Id">Detail</a>

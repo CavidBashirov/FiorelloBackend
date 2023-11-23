@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="text">
-                            @Html.Raw(Model.SliderInfo.Title)
+                            @Html.Raw(Model.SliderInfo.TitleVM)
                             <p class="text-black-50 d-none d-sm-block">@Model.SliderInfo.Description </p>
                         </div>
                         <div class="img">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="row">
-                 <partial name="_ProductsPartial" model="@Model.Products" />
+                <partial name="_ProductsPartial" model="@Model.Products" />
               
                 </div>
             </div>

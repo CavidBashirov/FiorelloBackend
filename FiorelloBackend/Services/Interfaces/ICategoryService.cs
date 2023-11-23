@@ -15,5 +15,6 @@ namespace FiorelloBackend.Services.Interfaces
         Task<List<Category>> GetArchiveDatasAsync();
         Task ExtractAsync(Category category);
         Task<Category> GetSoftDeletedDataById(int id);
+
     }
 }

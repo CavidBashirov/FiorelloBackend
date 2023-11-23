@@ -2,9 +2,10 @@ using FiorelloBackend.Data;
 using FiorelloBackend.Services;
 using FiorelloBackend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,6 +22,7 @@ builder.Services.AddScoped<ILayoutService, LayoutService>();
 builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<ISliderInfoService, SliderInfoService>();
 
 
 var app = builder.Build();

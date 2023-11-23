@@ -9,12 +9,27 @@
     <form class="forms-sample" method="post" asp-action="Edit">
         <div class="form-group">
             <label asp-for="Name">Category</label>
-            <input type="text" asp-for="Name" class="form-control" maxlength="number">
+            <textarea asp-for="Name" id="Name" class="ckeditor form-control" maxlength="number"></textarea>
             <span class="text-danger" asp-validation-for="Name"></span>
         </div>
         <button type="submit" class="btn btn-primary mr-2">Submit</button>
         <a class="btn btn-light" asp-action="Index">Back</a>
     </form>
 </div>
+
+@section script{
+   @*  <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+    <script>
+        $(function () {
+            ClassicEditor
+                .create(document.querySelector('#Name'))
+                .catch(error => {
+                    console.error(error);
+                });
+        })
+    </script> *@
+    <partial name="_ValidationScriptsPartial" />
+
+}
 
 

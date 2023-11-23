@@ -15,25 +15,28 @@ namespace FiorelloBackend.Controllers
         private readonly IProductService _productService;
         private readonly IBasketService _basketService;
         private readonly ISliderService _sliderService;
+        private readonly ISliderInfoService _sliderInfoService;
 
         public HomeController(AppDbContext context,
                               IProductService productService,
                               IBasketService basketService,
-                              ISliderService sliderService)
+                              ISliderService sliderService,
+                              ISliderInfoService sliderInfoService)
         {
             _context = context;
             _productService = productService;
             _basketService = basketService;
             _sliderService = sliderService;
+            _sliderInfoService = sliderInfoService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             List<SliderVM> sliders = await _sliderService.GetAllWithTrueStatusAsync();
-            SliderInfo sliderInfo = await _context.SliderInfos.FirstOrDefaultAsync();
-            List<Product> products = await _productService.GetAllWithImagesByTakeAsync(8);
+            SliderInfoVM sliderInfo = await _sliderInfoService.GetAsync();
             List<Category> categories = await _context.Categories.Where(m => !m.SoftDeleted).ToListAsync();
+            List<Product> products = await _productService.GetAllWithImagesByTakeAsync(8);
 
             HomeVM model = new()
             {

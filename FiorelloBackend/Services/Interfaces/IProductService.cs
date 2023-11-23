@@ -1,4 +1,5 @@
-﻿using FiorelloBackend.Models;
+﻿using FiorelloBackend.Areas.Admin.ViewModels.Product;
+using FiorelloBackend.Models;
 
 namespace FiorelloBackend.Services.Interfaces
 {
@@ -7,5 +8,8 @@ namespace FiorelloBackend.Services.Interfaces
         Task<Product> GetByIdAsync(int id);
         Task<List<Product>> GetAllWithImagesByTakeAsync(int take);
         Task<Product> GetByIdWithIncludesAsync(int id);
+        Task<List<ProductVM>> GetAllAsync();
+        Task<List<ProductVM>> GetPaginatedDatasAsync(int page, int take);
+        Task<int> GetCountAsync();
     }
 }

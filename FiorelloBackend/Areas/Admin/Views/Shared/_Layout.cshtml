@@ -194,9 +194,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/charts/chartjs.html">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
                             <i class="mdi mdi-chart-pie menu-icon"></i>
-                            <span class="menu-title">Charts</span>
+                            <span class="menu-title">Product</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -259,6 +259,7 @@
     <script src="~/admin/js/data-table.js"></script>
     <script src="~/admin/js/jquery.dataTables.js"></script>
     <script src="~/admin/js/dataTables.bootstrap4.js"></script>
+    @RenderSection("script",required:false);
     <!-- End custom js for this page-->
 </body>
 
