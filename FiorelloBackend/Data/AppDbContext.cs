@@ -1,9 +1,10 @@
 ﻿using FiorelloBackend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FiorelloBackend.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -18,10 +19,23 @@ namespace FiorelloBackend.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Product>().HasQueryFilter(m=>!m.SoftDeleted);
             modelBuilder.Entity<Category>().HasQueryFilter(m=>!m.SoftDeleted);
             modelBuilder.Entity<Blog>().HasQueryFilter(m=>!m.SoftDeleted);
             modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDeleted);
+
+            //modelBuilder.Entity<Category>()
+            //          .HasMany(c => c.Products)
+            //          .WithOne(p => p.Category)
+            //          .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<Product>()
+            //            .HasMany(p => p.Images)
+            //            .WithOne(pi => pi.Product)
+            //            .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<Setting>().HasData(

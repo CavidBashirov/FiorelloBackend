@@ -5,7 +5,7 @@
             <div class="col-12">
                 <nav class="navbar navbar-expand-lg d-flex d-lg-block justify-content-between d-xl-flex navbar-light py-3 py-lg-0">
                     <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                        <img src="img/@Model.Logo" alt="" id="logo">
+                        <img src="~/img/@Model.Logo" alt="" id="logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -94,36 +94,30 @@
                                     </li>
                                 </ul>
                             </li>
+                            @if (Model.UserFullName != null)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">@Model.UserFullName</a>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Blog</a>
-                                <ul class="list-unstyled py-3">
-                                    <li class=""><a class="px-1" href="">Blog 1</a></li>
-                                    <li class=""><a class="px-1" href="">Blog 2</a></li>
-                                    <li class="">
-                                        <a class="px-1 mr-5" href="">Blog 3</a>
-                                        <i class="fas fa-chevron-right fa-sm"></i>
-                                        <ul class="list-unstyled py-3">
-                                            <li class=""><a class="px-3" href="">Blog Layouts 1</a></li>
-                                            <li class=""><a class="px-3" href="">Blog Layouts 2</a></li>
-                                            <li class=""><a class="px-3" href="">Blog Layouts 3</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Elements</a>
+                                <a class="nav-link" href="#">Account</a>
                                 <ul class="list-unstyled py-3 elements">
-                                    <li class=""><a class="px-1" href="">Element 1</a></li>
-                                    <li class=""><a class="px-1" href="">Element 2</a></li>
-                                    <li class="element">
-                                        <i class="fas fa-chevron-right fa-sm mr-5"></i>
-                                        <a class="px-1" href="">Element 3</a>
-                                        <ul class="list-unstyled py-3">
-                                            <li class=""><a class="px-3" href="">Element 1</a></li>
-                                            <li class=""><a class="px-3" href="">Element 2</a></li>
-                                            <li class=""><a class="px-3" href="">Element 3</a></li>
-                                        </ul>
-                                    </li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li class="">
+                                            <form class="px-1" method="post" asp-controller="Account" asp-action="Logout">
+                                                <input type="submit" value="Logout" />
+                                            </form>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                     <li class=""><a class="px-1" asp-controller="Account" asp-action="Login">Login</a></li>
+                                     <li class=""><a class="px-1" asp-controller="Account" asp-action="Register">Register</a></li>
+                                    }
+                                    
+                                    
                                 </ul>
                             </li>
                             <li class="nav-item my-auto search">

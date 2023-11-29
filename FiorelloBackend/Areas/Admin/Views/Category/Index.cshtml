@@ -5,7 +5,10 @@
 
 <div class="container">
     <h1 class="text-center mt-3 mb-3">Sliders</h1>
-    <a class="btn btn-success text-white" asp-action="Create">Create</a>
+    @if (User.IsInRole("SuperAdmin"))
+    {
+        <a class="btn btn-success text-white" asp-action="Create">Create</a>
+    }
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>

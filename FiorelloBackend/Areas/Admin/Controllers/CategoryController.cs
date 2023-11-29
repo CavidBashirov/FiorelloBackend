@@ -1,12 +1,14 @@
 ﻿using FiorelloBackend.Data;
 using FiorelloBackend.Models;
 using FiorelloBackend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FiorelloBackend.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -25,6 +27,7 @@ namespace FiorelloBackend.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Create()
         {
             return View();

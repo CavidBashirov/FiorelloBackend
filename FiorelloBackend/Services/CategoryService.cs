@@ -52,7 +52,7 @@ namespace FiorelloBackend.Services
 
         public async Task<Category> GetByIdAsync(int id, bool isTracking)
         {
-            return isTracking ? await _context.Categories.FirstOrDefaultAsync(m => m.Id == id) : await _context.Categories.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+            return isTracking ? await _context.Categories.FirstOrDefaultAsync(m => m.Id == id) : await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<Category> GetByIdWithoutTrackingAsync(int id)

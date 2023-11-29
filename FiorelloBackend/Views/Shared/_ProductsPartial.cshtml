@@ -3,7 +3,7 @@
 @foreach (var item in Model)
 {
     <div class="col-sm-6 col-md-4 col-lg-3 mt-3">
-        <div class="product-item text-center" data-id="@item.Category.Id" data-productId="@item.Id">
+        <div class="product-item text-center" data-id="@item?.Category?.Id" data-productId="@item?.Id">
             <div class="img">
                 <a href="">
                     @if (item.Images.Count() != 0)

@@ -1,0 +1,81 @@
+﻿@model LoginVM
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: teal;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 60px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+    }
+
+    label {
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    input {
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+</style>
+
+<div class="container">
+    <h2>User Login</h2>
+    <div style="color:red;" asp-validation-summary="All"></div>
+    <form method="post" asp-controller="Account" asp-action="Login">
+        <label asp-for="EmailOrUsername">Email or username</label>
+        <input asp-for="EmailOrUsername">
+        <span style="color:red;margin-bottom:5px;" asp-validation-for="EmailOrUsername"></span>
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password">
+        <span style="color:red;margin-bottom:5px;" asp-validation-for="Password"></span>
+        <input type="submit" value="Login">
+    </form>
+    <a style="text-decoration:none;color:black" asp-action="Register">Register</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<partial name="_ValidationScriptsPartial" />
+
