@@ -1,4 +1,5 @@
 using FiorelloBackend.Data;
+using FiorelloBackend.Helpers;
 using FiorelloBackend.Models;
 using FiorelloBackend.Services;
 using FiorelloBackend.Services.Interfaces;
@@ -10,6 +11,8 @@ using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailConfig"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -33,6 +36,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     options.User.RequireUniqueEmail = true;
 
+    options.SignIn.RequireConfirmedEmail = true;
+
     // Default Lockout settings.
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
@@ -47,6 +52,7 @@ builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<ISliderInfoService, SliderInfoService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 var app = builder.Build();
